@@ -6,20 +6,29 @@ using DG.Tweening;
 
 public class Typer : MonoBehaviour
 {
+    [Header("Text")]
     public WordBank wordBank = null;
     public TextMeshProUGUI wordOutput;
     public List<TextMeshProUGUI> Texts = new List<TextMeshProUGUI>() { };
-
     private string remainingWord = string.Empty;
     private string currentWord = string.Empty;
-    public int bankIndex = 0;
 
+    [Header("Script Info")]
+    [Tooltip("where in the script the player is + who is talking")]
+    public int bankIndex = 0;
+    public bool npcSpeaking;
+
+    [Header("VFX")]
     public GameObject TextParent;
-    public Vector3 shakeVector; 
+    public Vector3 shakeVector;
+
+    [Header("SFX")]
+    public AudioManager theAudioManager;
+    public float pitchVary;
 
     private void Start()
     {
-        //typedOutput.text = "";
+        theAudioManager.PlayMusic("Music",false, true);
         SetCurrentWord();
     }
     private void SetCurrentWord()
@@ -31,12 +40,15 @@ public class Typer : MonoBehaviour
         //this is so i can use lists essentially as a dictionary bc dict cant be public
         if (currentWord.EndsWith("0"))
         {
+            npcSpeaking = true;
             wordOutput = Texts[0];
             Texts[1].text = "";
             Debug.Log("NPC talking");
         }
-        else if (currentWord.EndsWith("1"))
+        
+        if (currentWord.EndsWith("1"))
         {
+            npcSpeaking = false;
             wordOutput = Texts[1];
             Texts[0].text = "";
             Debug.Log("Player talking");
@@ -59,6 +71,14 @@ public class Typer : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
+            if (npcSpeaking)
+            {
+                theAudioManager.PlayPitch("Listening", pitchVary);
+            }
+            else
+            {
+                theAudioManager.PlayPitch("Speaking", pitchVary);
+            }
             string keysPressed = Input.inputString;
 
             //check if multiple keys pressed
@@ -87,6 +107,7 @@ public class Typer : MonoBehaviour
         else if (!isCorrectLetter(typedLetter))
         {
             StartCoroutine(Shake(TextParent));
+            theAudioManager.PlayPitch("Wrong",1);
             Debug.Log("wrong letter!");
         }
     }
