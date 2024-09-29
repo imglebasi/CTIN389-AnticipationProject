@@ -7,28 +7,42 @@ using DG.Tweening;
 public class Typer : MonoBehaviour
 {
     public WordBank wordBank = null;
-    public TextMeshProUGUI wordOutput = null;
-    public TextMeshProUGUI typedOutput = null;
-    public GameObject typedWords;
+    public TextMeshProUGUI wordOutput;
+    public List<TextMeshProUGUI> Texts = new List<TextMeshProUGUI>() { };
 
     private string remainingWord = string.Empty;
     private string currentWord = string.Empty;
-    //private string currentWord = string.Empty;
     public int bankIndex = 0;
 
+    public GameObject TextParent;
     public Vector3 shakeVector; 
 
     private void Start()
     {
-        typedOutput.text = "";
+        //typedOutput.text = "";
         SetCurrentWord();
     }
     private void SetCurrentWord()
     {
-        currentWord = wordBank.GetComponent<WordBank>().sentences[bankIndex];
-        //currentWord = wordBank.GetWord();
-        //currentWord = currentWord;
-        SetRemainingWord(currentWord);
+        //string should end with a character id (0 for creep, 1 for player)
+        //can set which characters turn it is to talk
+        currentWord = wordBank.GetComponent<WordBank>().Dialog[bankIndex];
+
+        //this is so i can use lists essentially as a dictionary bc dict cant be public
+        if (currentWord.EndsWith("0"))
+        {
+            wordOutput = Texts[0];
+            Texts[1].text = "";
+            Debug.Log("NPC talking");
+        }
+        else if (currentWord.EndsWith("1"))
+        {
+            wordOutput = Texts[1];
+            Texts[0].text = "";
+            Debug.Log("Player talking");
+        }
+
+        SetRemainingWord(currentWord.TrimEnd('0','1'));
     }
     private void SetRemainingWord(string newString)
     {
@@ -62,11 +76,8 @@ public class Typer : MonoBehaviour
         {
             RemoveLetter();
 
-            //type what player is typing
-            typedOutput.text = typedOutput.text + typedLetter;
-
             //reminder to change to isSENTENCEComplete, not word
-            if (isWordComplete())
+            if (isSentenceComplete())
             {
                 bankIndex = bankIndex + 1;
                 SetCurrentWord();
@@ -75,7 +86,7 @@ public class Typer : MonoBehaviour
         //WRONG input
         else if (!isCorrectLetter(typedLetter))
         {
-            StartCoroutine(ShakeText(typedWords));
+            StartCoroutine(Shake(TextParent));
             Debug.Log("wrong letter!");
         }
     }
@@ -89,13 +100,13 @@ public class Typer : MonoBehaviour
         string newString = remainingWord.Remove(0, 1);
         SetRemainingWord(newString);
     }
-    private bool isWordComplete()
+    private bool isSentenceComplete()
     {
         //no more to type
         return remainingWord.Length == 0;
     }
 
-    public IEnumerator ShakeText(GameObject textobj)
+    public IEnumerator Shake(GameObject textobj)
     {
         yield return textobj.transform.DOShakePosition(0.2f, shakeVector, 10, 45, true, false, ShakeRandomnessMode.Full);
     }
