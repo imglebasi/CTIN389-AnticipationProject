@@ -2062,7 +2062,6 @@ MonoBehaviour:
   npcSpeaking: 0
   TextParent: {fileID: 401911697}
   shakeVector: {x: 5, y: 5, z: 5}
-  startScreen: {fileID: 0}
   theAudioManager: {fileID: 1943020232}
   pitchVary: 3.5
 --- !u!1 &1943020231
@@ -2203,7 +2202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2061585199
 MonoBehaviour:
   m_ObjectHideFlags: 0
