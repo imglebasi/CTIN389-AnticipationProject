@@ -761,6 +761,9 @@ GameObject:
   - component: {fileID: 1040126810}
   - component: {fileID: 1040126809}
   - component: {fileID: 1040126808}
+  - component: {fileID: 1040126813}
+  - component: {fileID: 1040126812}
+  - component: {fileID: 1040126814}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -857,6 +860,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1040126812
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040126807}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1ddc8572886d6ae4ca380cc1df68c684, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1040126813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040126807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a789d742210604a8178ef95349183f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcTalking: 0
+  idle: 0
+  mannerismAmt: 4
+  theAnimation: 
+  mannerismLength: []
+  idleToAnimMin: 0
+  idleToAnimMax: 0
+--- !u!114 &1040126814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040126807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02a789d742210604a8178ef95349183f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcTalking: 0
+  idle: 0
+  mannerismAmt: 4
+  theAnimation: 
+  mannerismLength:
+  - 1
+  - 2
+  - 3
+  idleToAnimMin: 0.1
+  idleToAnimMax: 5.5
 --- !u!1 &1376202433
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,21 +1295,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Dialog:
-  - the creep is talking 0
-  - player talking 1
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
-  - creep again 0
+  - you look amazing tonight. up close I can really see how lovely you are 0
+  - thank you its nice to meet you in person too 1
+  - yeah after so much messaging i figured it was time 0
+  - i know right- have you been here before? 1
+  - no no but i thought youd like this place 0
+  - something familiar 0
+  - oh yeah they make amazing egg parmigiana 1
+  - yes eggplant, your favorite 0
+  - haha have i brought that up before? 1
+  - maybe haha or just a lucky guess 0
+  - i actually went here for my birthday a bit ago 1
+  - same restaurant and same dress, i like how consistent you are 0
+  - i dont think i was, wait how did you know i was- 1
+  - i think ill order the pineapple cashew salad 0
+  - that sounds good, we can share 1
+  - ... 0
+  - whats wrong 1
+  - maybe we shouldnt share 0
+  - why not 1
+  - just a hunch 0
+  - i havent had pineapple before, im really excited to try 1
+  - you really shouldnt you could be allergic 0
+  - actually. i am allergic 1
+  - thats another lucky guess 1
+  - its a pretty common allergy 0
+  - i guess so 1
+  - you can still have some if you want 0
+  - you dont live too far 0
+  - i really shouldnt 1
+  - we could walk over right now 0
+  - i really shouldnt 1
+  - and i could stay if you needed 0
+  - i should go 1
+  - wait wait let me explain 0
+  - no stop i know whats going on 1
+  - ... 0
+  - youve been stalking me 1
+  - ... 0
+  - and i cannot believe 1
+  - youve waited this long to tell me 1
+  - huh 0
+  - we should go 1
+  - huh where 0
+  - to your place, its not far, ive seen it. a lot 1
+  - huh? 0
+  - youre not the only one who spends hours looking through a window 1
 --- !u!1 &1614541005
 GameObject:
   m_ObjectHideFlags: 0

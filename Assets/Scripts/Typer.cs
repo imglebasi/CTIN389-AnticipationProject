@@ -13,8 +13,8 @@ public class Typer : MonoBehaviour
     private string remainingWord = string.Empty;
     private string currentWord = string.Empty;
 
-    [Header("Script Info")]
     [Tooltip("where in the script the player is + who is talking")]
+    [Header("Script Info")]
     public int bankIndex = 0;
     public bool npcSpeaking;
 
@@ -36,6 +36,12 @@ public class Typer : MonoBehaviour
         //string should end with a character id (0 for creep, 1 for player)
         //can set which characters turn it is to talk
         currentWord = wordBank.GetComponent<WordBank>().Dialog[bankIndex];
+        
+        //if reach end of script
+        if(wordBank.GetComponent<WordBank>().Dialog[bankIndex] == null)
+        {
+
+        }
 
         //this is so i can use lists essentially as a dictionary bc dict cant be public
         if (currentWord.EndsWith("0"))
@@ -44,6 +50,8 @@ public class Typer : MonoBehaviour
             wordOutput = Texts[0];
             Texts[1].text = "";
             Debug.Log("NPC talking");
+            //tell npc that npc is TALKING
+            GameObject.Find("NPC").GetComponent<NpcBehavior>().npcTalking = true;
         }
         
         if (currentWord.EndsWith("1"))
@@ -52,6 +60,8 @@ public class Typer : MonoBehaviour
             wordOutput = Texts[1];
             Texts[0].text = "";
             Debug.Log("Player talking");
+            //tell npc that npc is NOT talking
+            GameObject.Find("NPC").GetComponent<NpcBehavior>().npcTalking = false;
         }
 
         SetRemainingWord(currentWord.TrimEnd('0','1'));
