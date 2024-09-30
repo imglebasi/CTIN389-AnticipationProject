@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UI;
 using TMPro;
 using DG.Tweening;
 
@@ -25,9 +26,12 @@ public class Typer : MonoBehaviour
     [Header("SFX")]
     public AudioManager theAudioManager;
     public float pitchVary;
+    private Transform image;
 
     private void Start()
     {
+        GameObject.Find("End Screen").SetActive(false);
+
         theAudioManager.PlayMusic("Music",false, true);
         SetCurrentWord();
     }
@@ -40,6 +44,8 @@ public class Typer : MonoBehaviour
         //if reach end of script
         if(wordBank.GetComponent<WordBank>().Dialog[bankIndex] == null)
         {
+            //end of script
+            GameObject.Find("End Screen").SetActive(true);
 
         }
 
