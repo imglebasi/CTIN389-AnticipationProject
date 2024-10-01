@@ -1140,12 +1140,18 @@ MonoBehaviour:
   idle: 0
   mannerismAmt: 3
   theAnimation: 
+<<<<<<< Updated upstream
   mannerismLength:
   - 1
   - 2
   - 3
   idleToAnimMin: 0
   idleToAnimMax: 5.5
+=======
+  mannerismLength: []
+  idleToAnimMin: 0.1
+  idleToAnimMax: 0.1
+>>>>>>> Stashed changes
 --- !u!114 &1040126814
 MonoBehaviour:
   m_ObjectHideFlags: 0
