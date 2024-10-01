@@ -7,10 +7,10 @@ public class CameraLook : MonoBehaviour
     private float rotationX = 0f;
     private float rotationY = 0f;
     public float sensitivity = 1f;
+    public AudioManager theAudioManager;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
