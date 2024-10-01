@@ -35,6 +35,9 @@ public class Typer : MonoBehaviour
         theAudioManager.PlayMusic("Music",false, true);
         SetCurrentWord();
     }
+    public void FixedUpdate()
+    {
+    }
     private void SetCurrentWord()
     {
         //string should end with a character id (0 for creep, 1 for player)
@@ -57,17 +60,17 @@ public class Typer : MonoBehaviour
             Texts[1].text = "";
             Debug.Log("NPC talking");
             //tell npc that npc is TALKING
-            GameObject.Find("NPC").GetComponent<NpcBehavior>().npcTalking = true;
+            GameObject.Find("NPC").GetComponent<NpcBehavior>().SetAnimation(npcSpeaking);
+            //GameObject.Find("NPC").GetComponent<NpcBehavior>().npcTalking = true;
         }
-        
-        if (currentWord.EndsWith("1"))
+        else if(currentWord.EndsWith("1"))
         {
             npcSpeaking = false;
             wordOutput = Texts[1];
             Texts[0].text = "";
             Debug.Log("Player talking");
             //tell npc that npc is NOT talking
-            GameObject.Find("NPC").GetComponent<NpcBehavior>().npcTalking = false;
+            GameObject.Find("NPC").GetComponent<NpcBehavior>().SetAnimation(npcSpeaking);
         }
 
         SetRemainingWord(currentWord.TrimEnd('0','1'));
@@ -124,7 +127,7 @@ public class Typer : MonoBehaviour
         {
             StartCoroutine(Shake(TextParent));
             theAudioManager.PlayPitch("Wrong",1);
-            Debug.Log("wrong letter!");
+            //Debug.Log("wrong letter!");
         }
     }
     private bool isCorrectLetter(string letter)

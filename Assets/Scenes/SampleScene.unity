@@ -1137,13 +1137,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a789d742210604a8178ef95349183f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcTalking: 0
   idle: 0
-  mannerismAmt: 4
+  mannerismAmt: 3
   theAnimation: 
-  mannerismLength: []
+  mannerismLength:
+  - 1
+  - 2
+  - 3
   idleToAnimMin: 0
-  idleToAnimMax: 0
+  idleToAnimMax: 5.5
 --- !u!114 &1040126814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1156,7 +1158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a789d742210604a8178ef95349183f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcTalking: 0
   idle: 0
   mannerismAmt: 4
   theAnimation: 
@@ -2161,7 +2162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1985918355
 RectTransform:
   m_ObjectHideFlags: 0

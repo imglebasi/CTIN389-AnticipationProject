@@ -7,7 +7,7 @@ using DG.Tweening;
 public class NpcBehavior : MonoBehaviour
 {
     [Header("Conditions")]
-    public bool npcTalking;
+    //public bool npcTalking;
     public bool idle;
 
     [Header("Animations Info")]
@@ -40,30 +40,37 @@ public class NpcBehavior : MonoBehaviour
 
     void Start()
     {
+        idle = false;
        _Animator = GetComponent<Animator>();
     }
 
     void Update()
     {
+    }
+
+    public void SetAnimation(bool npcTalking)
+    {
+
         //npc is talking
         if (npcTalking)
         {
             theAnimation = "talking";
-            _Animator.SetInteger(0, 0);
+            _Animator.SetInteger("animation", 0);
         }
         //player is talking and npc is idle
         else if (!npcTalking && idle)
         {
+            Debug.Log("npc is idle");
             //set animation to idle
             theAnimation = "idle";
-            _Animator.SetInteger(0, 1);
+            _Animator.SetInteger("animation", 1);
 
             //start a countdown to the next mannerism anim
-            itaDuration = Random.Range(idleToAnimMin,idleToAnimMax);
+            itaDuration = Random.Range(idleToAnimMin, idleToAnimMax);
             StartCoroutine(idleToAnimDelay(itaDuration));
         }
         //player is talking and npc is NOT idle, doing a mannerism
-        else if(!npcTalking && !idle)
+        else if (!npcTalking && !idle)
         {
             Debug.Log("doing a mannerism");
         }
@@ -79,8 +86,8 @@ public class NpcBehavior : MonoBehaviour
 
         //CANT BE 0 or 1 (talking and idle anim (has to be 2-??)
         whichAnim = Random.Range(2, mannerismAmt+1);
-        theAnimation = "a mannerism";
-        _Animator.SetInteger(0, whichAnim);
+        theAnimation = "a mannerism: " + whichAnim;
+        _Animator.SetInteger("animation", whichAnim);
         
         //start countdown to switch BACK to idle
         StartCoroutine(animToIdleDelay(whichAnim));
