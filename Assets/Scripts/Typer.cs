@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.UI;
 using TMPro;
 using DG.Tweening;
 
@@ -22,21 +21,27 @@ public class Typer : MonoBehaviour
     [Header("VFX")]
     public GameObject TextParent;
     public Vector3 shakeVector;
+    public GameObject EndScreen;
 
     [Header("SFX")]
     public AudioManager theAudioManager;
     public float pitchVary;
     private Transform image;
 
+    [Header("Npc")]
+    public GameObject NPC;
+
     private void Start()
     {
-        GameObject.Find("End Screen").SetActive(false);
+        theAudioManager.PlayPitch("Music", 1);
 
-        theAudioManager.PlayMusic("Music",false, true);
+        EndScreen.SetActive(false);
+
         SetCurrentWord();
     }
     public void FixedUpdate()
     {
+        //NPC.GetComponent<NpcBehavior>().npcTalking = npcSpeaking;
     }
     private void SetCurrentWord()
     {
@@ -56,21 +61,24 @@ public class Typer : MonoBehaviour
         if (currentWord.EndsWith("0"))
         {
             npcSpeaking = true;
+
+            NPC.GetComponent<NpcBehavior>().idle = false;
+            NPC.GetComponent<NpcBehavior>().SetAnimation(npcSpeaking);
+
             wordOutput = Texts[0];
             Texts[1].text = "";
             Debug.Log("NPC talking");
-            //tell npc that npc is TALKING
-            GameObject.Find("NPC").GetComponent<NpcBehavior>().SetAnimation(npcSpeaking);
-            //GameObject.Find("NPC").GetComponent<NpcBehavior>().npcTalking = true;
         }
         else if(currentWord.EndsWith("1"))
         {
             npcSpeaking = false;
+
+            NPC.GetComponent<NpcBehavior>().idle = true;
+            NPC.GetComponent<NpcBehavior>().SetAnimation(npcSpeaking);
+
             wordOutput = Texts[1];
             Texts[0].text = "";
             Debug.Log("Player talking");
-            //tell npc that npc is NOT talking
-            GameObject.Find("NPC").GetComponent<NpcBehavior>().SetAnimation(npcSpeaking);
         }
 
         SetRemainingWord(currentWord.TrimEnd('0','1'));
