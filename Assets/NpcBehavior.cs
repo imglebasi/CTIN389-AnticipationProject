@@ -81,7 +81,7 @@ public class NpcBehavior : MonoBehaviour
             //set controller to a random mannerism
 
             //CANT BE 0 or 1 (talking and idle anim (has to be 2-??)
-            whichAnim = Random.Range(2, mannerismAmt + 1);
+            whichAnim = Random.Range(2, 5);
             theAnimation = "a mannerism: " + whichAnim;
             _Animator.SetInteger("animation", whichAnim);
 
