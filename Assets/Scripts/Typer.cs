@@ -28,8 +28,9 @@ public class Typer : MonoBehaviour
     public float pitchVary;
     private Transform image;
 
-    [Header("Npc")]
-    public GameObject NPC;
+    [Header("Affected Parties")]
+    public List<NpcBehavior> NPCs = new List<NpcBehavior>() { };
+    public Timer Timer;
 
     private void Start()
     {
@@ -41,7 +42,7 @@ public class Typer : MonoBehaviour
     }
     public void FixedUpdate()
     {
-        //NPC.GetComponent<NpcBehavior>().npcTalking = npcSpeaking;
+
     }
     private void SetCurrentWord()
     {
@@ -53,8 +54,7 @@ public class Typer : MonoBehaviour
         if(wordBank.GetComponent<WordBank>().Dialog[bankIndex] == null)
         {
             //end of script
-            GameObject.Find("End Screen").SetActive(true);
-
+            EndScreen.SetActive(true);
         }
 
         //this is so i can use lists essentially as a dictionary bc dict cant be public
@@ -62,8 +62,11 @@ public class Typer : MonoBehaviour
         {
             npcSpeaking = true;
 
-            NPC.GetComponent<NpcBehavior>().idle = false;
-            NPC.GetComponent<NpcBehavior>().SetAnimation(npcSpeaking);
+            foreach(NpcBehavior script in NPCs) //so arms also get animated
+            {
+                script.idle = false;
+                script.SetAnimation(npcSpeaking);
+            }
 
             wordOutput = Texts[0];
             Texts[1].text = "";
@@ -73,8 +76,11 @@ public class Typer : MonoBehaviour
         {
             npcSpeaking = false;
 
-            NPC.GetComponent<NpcBehavior>().idle = true;
-            NPC.GetComponent<NpcBehavior>().SetAnimation(npcSpeaking);
+            foreach (NpcBehavior script in NPCs) //so arms also get animated
+            {
+                script.idle = true;
+                script.SetAnimation(npcSpeaking);
+            }
 
             wordOutput = Texts[1];
             Texts[0].text = "";
@@ -128,6 +134,10 @@ public class Typer : MonoBehaviour
             {
                 bankIndex = bankIndex + 1;
                 SetCurrentWord();
+
+                //let timer know to set a new timer max
+                Timer.bankIndex = Timer.bankIndex + 1;
+                Timer.setTimerMax();
             }
         }
         //WRONG input

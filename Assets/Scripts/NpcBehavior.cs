@@ -50,8 +50,8 @@ public class NpcBehavior : MonoBehaviour
 
     public void SetAnimation(bool talking)
     {
-
-        npcTalking = theTyper.GetComponent<Typer>().npcSpeaking;
+        //just in case,,,,
+        //npcTalking = theTyper.GetComponent<Typer>().npcSpeaking;
 
         //npc is talking
         if (talking)
