@@ -10,10 +10,10 @@ public class Timer : MonoBehaviour
     [Header("Timer")]
     public TextMeshProUGUI TimerText;
     public Image Fill;
-    //public Image timerCirlce;
+    public Image Outline;
 
     [Header("Timer Values")]
-    public float time;
+    public float timeRemaining;
     public float timeMax;
     //how much time is given per character
     public float perCharacterTime;
@@ -26,6 +26,9 @@ public class Timer : MonoBehaviour
     public WordBank Dialog;
     public int bankIndex = 0;
     public string currentSentence;
+    public Clarity ClarityManager;
+    [Tooltip("if timer runs out, how much clarity decreases")]
+    public float clarityDecrease;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,22 +43,31 @@ public class Timer : MonoBehaviour
         {
             if (!timerReset)
             {
-                time = timeMax;
+                timeRemaining = timeMax;
                 timerReset = true;
             }
-            Fill.fillAmount = time / timeMax;
+            Fill.fillAmount = timeRemaining / timeMax;
             //Debug.Log(Fill.fillAmount);
-            time -= Time.deltaTime;
+            timeRemaining -= Time.deltaTime;
 
-            TimerText.text = "" + time;
+            TimerText.text = "" + timeRemaining;
             //alt
             //TimerText.text = "" + (int)time;
             
-            if (time < 0)
+            if (timeRemaining < 0)
             {
                 //Debug.Log("time ran out");
-                time = 0;
-                //uhhh gg idk 
+                timeRemaining = 0;
+                //increase distortion
+                ClarityManager.UpdateClarity(clarityDecrease);
+                //move onto next sentence
+                Typer.GetComponent<Typer>().bankIndex += 1;
+
+                //stop timer
+                runTimer = false;
+                //go next sentence for both
+                Typer.GetComponent<Typer>().bankIndex += 1;
+                bankIndex += 1;
             }
         }
     }
@@ -69,6 +81,7 @@ public class Timer : MonoBehaviour
 
         if (currentSentence.EndsWith("0"))
         {
+
             //get rid of extrenous 0
             currentSentence.TrimEnd('0');
 
@@ -85,6 +98,10 @@ public class Timer : MonoBehaviour
             }
 
             //Debug.Log(timeMax);
+
+            //reset time
+            timeRemaining = timeMax;
+
             //start timer
             runTimer = true;
 
@@ -92,7 +109,9 @@ public class Timer : MonoBehaviour
         else if (currentSentence.EndsWith("1")) //player is talking so...
         {
             //hide timer
-            //timerCirlce.enabled = false;
+            Fill.color = new Color(255,0,0,0);
+            Outline.color = new Color(255, 0, 0, 0);
+
             //dont let it run
             runTimer = false;
             Debug.Log("timer off, is players turn");

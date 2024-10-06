@@ -22,6 +22,9 @@ public class Typer : MonoBehaviour
     public GameObject TextParent;
     public Vector3 shakeVector;
     public GameObject EndScreen;
+    public Clarity ClarityManager;
+    //how much clarity should go down per mistake
+    public float clarityDecreasePerMistake;
 
     [Header("SFX")]
     public AudioManager theAudioManager;
@@ -69,6 +72,7 @@ public class Typer : MonoBehaviour
             }
 
             wordOutput = Texts[0];
+            Debug.Log(wordOutput);
             Texts[1].text = "";
             Debug.Log("NPC talking");
         }
@@ -143,9 +147,15 @@ public class Typer : MonoBehaviour
         //WRONG input
         else if (!isCorrectLetter(typedLetter))
         {
+            //even if wrong, remove letter BUT
+            RemoveLetter();
+            //shake
             StartCoroutine(Shake(TextParent));
+            //play wrong input sound
             theAudioManager.PlayPitch("Wrong",1);
-            //Debug.Log("wrong letter!");
+            //and decrease clarity
+            Debug.Log("called UpdateClarity from TYPER");
+            ClarityManager.UpdateClarity(clarityDecreasePerMistake);
         }
     }
     private bool isCorrectLetter(string letter)
