@@ -34,9 +34,12 @@ public class Typer : MonoBehaviour
     [Header("Affected Parties")]
     public List<NpcBehavior> NPCs = new List<NpcBehavior>() { };
     public Timer Timer;
+    public TextMeshProUGUI BackgroundText;
+    public int mistakeAmt = 0;
 
     private void Start()
     {
+
         theAudioManager.PlayPitch("Music", 1);
 
         EndScreen.SetActive(false);
@@ -47,7 +50,7 @@ public class Typer : MonoBehaviour
     {
 
     }
-    private void SetCurrentWord()
+    public void SetCurrentWord()
     {
         //string should end with a character id (0 for creep, 1 for player)
         //can set which characters turn it is to talk
@@ -72,9 +75,12 @@ public class Typer : MonoBehaviour
             }
 
             wordOutput = Texts[0];
-            Debug.Log(wordOutput);
+            //Debug.Log(wordOutput);
             Texts[1].text = "";
-            Debug.Log("NPC talking");
+            //Debug.Log("NPC talking");
+
+            //have background text
+            //SetBackgroundText(currentWord.TrimEnd('0'));
         }
         else if(currentWord.EndsWith("1"))
         {
@@ -89,8 +95,12 @@ public class Typer : MonoBehaviour
             wordOutput = Texts[1];
             Texts[0].text = "";
             Debug.Log("Player talking");
+
+            //hide background text
+            //BackgroundText.text = "";
         }
 
+        //Debug.Log("about to trim because of SetRemainingWord");
         SetRemainingWord(currentWord.TrimEnd('0','1'));
     }
     private void SetRemainingWord(string newString)
@@ -131,6 +141,7 @@ public class Typer : MonoBehaviour
     {
         if (isCorrectLetter(typedLetter))
         {
+            //Debug.Log("correct letter!");
             RemoveLetter();
 
             //reminder to change to isSENTENCEComplete, not word
@@ -144,23 +155,36 @@ public class Typer : MonoBehaviour
                 Timer.setTimerMax();
             }
         }
-        //WRONG input
+        //WRONG input while listening to npc talk
         else if (!isCorrectLetter(typedLetter))
         {
-            //even if wrong, remove letter BUT
-            RemoveLetter();
+            //Debug.Log("incorrect letter.");
+            if (npcSpeaking) 
+            {
+                mistakeAmt += 1;
+                //remove letter BUT
+                RemoveLetter();
+                // decrease clarity
+                ClarityManager.UpdateClarity(clarityDecreasePerMistake);
+            }
+
+            //no matter who talking: get wrong, get vfx and sfx
             //shake
             StartCoroutine(Shake(TextParent));
             //play wrong input sound
-            theAudioManager.PlayPitch("Wrong",1);
-            //and decrease clarity
-            Debug.Log("called UpdateClarity from TYPER");
-            ClarityManager.UpdateClarity(clarityDecreasePerMistake);
+            theAudioManager.PlayPitch("Wrong", 1);
+            
+            //sentence can be completed on an incorrect letter
+            if (isSentenceComplete())
+            {
+                bankIndex =+ 1;
+                SetCurrentWord();
+            }
         }
     }
     private bool isCorrectLetter(string letter)
     {
-        //if first letter is correct letter
+        //if first letter, is correct letter
         return remainingWord.IndexOf(letter) == 0;
     }
     private void RemoveLetter()
@@ -174,8 +198,13 @@ public class Typer : MonoBehaviour
         return remainingWord.Length == 0;
     }
 
+    public void SetBackgroundText(string currentSentence)
+    {
+        BackgroundText.text = currentSentence;
+    }
     public IEnumerator Shake(GameObject textobj)
     {
         yield return textobj.transform.DOShakePosition(0.2f, shakeVector, 10, 45, true, false, ShakeRandomnessMode.Full);
     }
+
 }

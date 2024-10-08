@@ -11,7 +11,7 @@ public class Clarity : MonoBehaviour
     //MOST clarity = 0 because its based on alpha
     public List<Image> Overlays = new List<Image>();
     public Color TargetColor;
-    public Color testColor;
+    //public Color testColor;
 
     //how long it takes for the filters to appear
     public float distortDuration;
@@ -34,12 +34,17 @@ public class Clarity : MonoBehaviour
     {
         if(recover)
         {
-            StartCoroutine(ClarityCooldown());
+            clarity = 0;
+            TargetColor.a = clarity;
+            StartCoroutine(ClarityRestore());
+            //UpdateClarity(0);
         }
 
     }
     public void UpdateClarity(float distortion)
     {
+        
+        //what did i do this for,,?? ig if i ever update clarity as positive dont wanna recover reset
         if (distortion > 0)
         {
             recover = false;
@@ -49,25 +54,40 @@ public class Clarity : MonoBehaviour
         clarity += distortion;
         TargetColor.a += distortion;
 
+        //version without animation
         foreach (Image overlay in Overlays)
         {
             overlay.color = TargetColor;
         }
+
+        StartCoroutine(ClarityCooldown());
     }
     public IEnumerator ClarityCooldown()
     {
-        foreach(Image overlay in Overlays)
+        yield return new WaitForSeconds(timeBeforeRecover);
+        recover = true;
+    }
+
+    public IEnumerator ClarityRestore()
+    {
+        //version with animation
+        foreach (Image overlay in Overlays)
         {
-            yield return overlay.DOFade(.1f, timeBeforeRecover);
+            yield return overlay.DOFade(0, 1f); 
         }
     }
 
 
-    public IEnumerator ChangeColor(float newAlpha, Image overlay)
+    /*public IEnumerator ChangeColor(float newAlpha, Image overlay)
     {
         yield return overlay.DOFade(newAlpha, distortDuration);
 
+        foreach (Image overlay in Overlays)
+        {
+            yield return overlay.DOFade(.1f, timeBeforeRecover);
+        }
+
         //after change color, start time before the player begins to regain clarity
         //StartCoroutine(ClarityCooldown());
-    }
+    }*/
 }

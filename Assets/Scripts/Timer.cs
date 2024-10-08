@@ -60,20 +60,23 @@ public class Timer : MonoBehaviour
                 timeRemaining = 0;
                 //increase distortion
                 ClarityManager.UpdateClarity(clarityDecrease);
+
                 //move onto next sentence
                 Typer.GetComponent<Typer>().bankIndex += 1;
+                Typer.GetComponent<Typer>().SetCurrentWord();
+                bankIndex += 1;
 
                 //stop timer
                 runTimer = false;
-                //go next sentence for both
-                Typer.GetComponent<Typer>().bankIndex += 1;
-                bankIndex += 1;
+                //run timerMax
+                setTimerMax();
             }
         }
     }
 
     public void setTimerMax()
     {
+
         //reset timer here?? idk
         //timerReset = false;
 
@@ -81,12 +84,15 @@ public class Timer : MonoBehaviour
 
         if (currentSentence.EndsWith("0"))
         {
+            //reset cause we abt to calculate a new timeMax to use
+            timeMax = 0;
+
+            //show timer
+            Fill.color = new Color(255, 255, 255, 200);
+            Outline.color = new Color(255, 255, 255, 200);
 
             //get rid of extrenous 0
             currentSentence.TrimEnd('0');
-
-            //turn on timer
-            //timerCirlce.enabled = true;
 
             foreach (char character in currentSentence)
             {
@@ -109,8 +115,8 @@ public class Timer : MonoBehaviour
         else if (currentSentence.EndsWith("1")) //player is talking so...
         {
             //hide timer
-            Fill.color = new Color(255,0,0,0);
-            Outline.color = new Color(255, 0, 0, 0);
+            Fill.color = new Color(255, 255, 255, 0);
+            Outline.color = new Color(255, 255, 255, 0);
 
             //dont let it run
             runTimer = false;

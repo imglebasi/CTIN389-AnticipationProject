@@ -63,25 +63,25 @@ public class NpcBehavior : MonoBehaviour
         //player is talking and npc is idle
         else if ((!talking) && idle)
         {
-            Debug.Log("npc is idle");
+            //Debug.Log("npc is idle");
             //set animation to idle
             theAnimation = "idle";
             _Animator.SetInteger("animation", 0);
 
             //start a countdown to the next mannerism anim
             itaDuration = Random.Range(idleToAnimMin, idleToAnimMax);
-            Debug.Log("itaDuration: " + itaDuration);
+            //Debug.Log("itaDuration: " + itaDuration);
             StartCoroutine(idleToAnimDelay(itaDuration));
         }
         //player is talking and npc is NOT idle, doing a mannerism
         else if ((!talking) && (!idle))
         {
-            Debug.Log("doing a mannerism");
+            //Debug.Log("doing a mannerism");
 
             //set controller to a random mannerism
 
             //CANT BE 0 or 1 (talking and idle anim (has to be 2-??)
-            whichAnim = Random.Range(2, 5);
+            whichAnim = Random.Range(2, 4);
             theAnimation = "a mannerism: " + whichAnim;
             _Animator.SetInteger("animation", whichAnim);
 
