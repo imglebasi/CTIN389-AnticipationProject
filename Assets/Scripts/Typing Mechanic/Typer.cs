@@ -6,17 +6,26 @@ using DG.Tweening;
 
 public class Typer : MonoBehaviour
 {
-    [Header("Text")]
-    public WordBank wordBank = null;
-    public TextMeshProUGUI wordOutput;
-    public List<TextMeshProUGUI> Texts = new List<TextMeshProUGUI>() { };
-    private string remainingWord = string.Empty;
-    private string currentWord = string.Empty;
+    public GlobalTyperVariables GlobalVariables;
 
+    [Header("Text")]
+    public WordBank SceneScript;
+
+    public List<TextMeshProUGUI> Texts = new List<TextMeshProUGUI>() { };
+    public TextMeshProUGUI backgroundText;
+    public TextMeshProUGUI topText;
+
+    public string remainingSentence = string.Empty;
+    public string currentSentence = string.Empty;
+
+    public string wrongColorModifier = "<color=#ff0000ff>";
+
+    /*
     [Tooltip("where in the script the player is + who is talking")]
     [Header("Script Info")]
     public int bankIndex = 0;
     public bool npcSpeaking;
+    */
 
     [Header("VFX")]
     public GameObject TextParent;
@@ -39,74 +48,71 @@ public class Typer : MonoBehaviour
 
     private void Start()
     {
-
         theAudioManager.PlayPitch("Music", 1);
 
         EndScreen.SetActive(false);
 
+        topText.text = "";
         SetCurrentWord();
     }
     public void FixedUpdate()
     {
-
+        if (!GlobalVariables.npcTalking)
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                GlobalVariables.ScriptIndex += 1;
+            }
+        }
     }
     public void SetCurrentWord()
     {
-        //string should end with a character id (0 for creep, 1 for player)
-        //can set which characters turn it is to talk
-        currentWord = wordBank.GetComponent<WordBank>().Dialog[bankIndex];
+        currentSentence = SceneScript.Dialog[GlobalVariables.ScriptIndex];
         
         //if reach end of script
-        if(wordBank.GetComponent<WordBank>().Dialog[bankIndex] == null)
+        if(SceneScript.GetComponent<WordBank>().Dialog[GlobalVariables.ScriptIndex] == null)
         {
-            //end of script
             EndScreen.SetActive(true);
         }
 
-        //this is so i can use lists essentially as a dictionary bc dict cant be public
-        if (currentWord.EndsWith("0"))
+        if (currentSentence.EndsWith("0"))
         {
-            npcSpeaking = true;
+            //FETCH GlobalTyperVariable script
+            GlobalVariables.npcTalking = true;
 
             foreach(NpcBehavior script in NPCs) //so arms also get animated
             {
                 script.idle = false;
-                script.SetAnimation(npcSpeaking);
+                script.SetAnimation(GlobalVariables.npcTalking);
             }
 
-            wordOutput = Texts[0];
-            //Debug.Log(wordOutput);
-            Texts[1].text = "";
-            //Debug.Log("NPC talking");
+            BackgroundText.text = currentSentence;
+            topText.text = "";
 
             //have background text
             //SetBackgroundText(currentWord.TrimEnd('0'));
         }
-        else if(currentWord.EndsWith("1"))
+        else if(currentSentence.EndsWith("1"))
         {
-            npcSpeaking = false;
+            //SET GlobalTyperVariable
+            GlobalVariables.npcTalking = false;
 
+            /*
             foreach (NpcBehavior script in NPCs) //so arms also get animated
             {
-                script.idle = true;
-                script.SetAnimation(npcSpeaking);
-            }
+                script.SetAnimation(GlobalVariables.npcTalking);
+            }*/
 
-            wordOutput = Texts[1];
-            Texts[0].text = "";
-            Debug.Log("Player talking");
-
-            //hide background text
-            //BackgroundText.text = "";
+            //hide texts
+            BackgroundText.text = "";
+            topText.text = "";
         }
 
-        //Debug.Log("about to trim because of SetRemainingWord");
-        SetRemainingWord(currentWord.TrimEnd('0','1'));
+        SetRemainingWord(currentSentence.TrimEnd('0','1'));
     }
     private void SetRemainingWord(string newString)
     {
-        remainingWord = newString;
-        wordOutput.text = remainingWord;
+        remainingSentence = newString;
     }
 
     private void Update()
@@ -118,7 +124,7 @@ public class Typer : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
-            if (npcSpeaking)
+            if (GlobalVariables.npcTalking)
             {
                 theAudioManager.PlayPitch("Listening", pitchVary);
             }
@@ -141,43 +147,47 @@ public class Typer : MonoBehaviour
     {
         if (isCorrectLetter(typedLetter))
         {
-            //Debug.Log("correct letter!");
+            Debug.Log("correct letter!");
             RemoveLetter();
+            AddTopText("<color=#000000ff>" + typedLetter);
 
-            //reminder to change to isSENTENCEComplete, not word
             if (isSentenceComplete())
             {
-                bankIndex = bankIndex + 1;
+                GlobalVariables.ScriptIndex = GlobalVariables.ScriptIndex + 1;
                 SetCurrentWord();
 
                 //let timer know to set a new timer max
-                Timer.bankIndex = Timer.bankIndex + 1;
-                Timer.setTimerMax();
+                //Timer.bankIndex = Timer.bankIndex + 1;
+                //Timer.setTimerMax();
             }
         }
+
         //WRONG input while listening to npc talk
         else if (!isCorrectLetter(typedLetter))
         {
-            //Debug.Log("incorrect letter.");
-            if (npcSpeaking) 
+            Debug.Log("incorrect letter.");
+
+            AddTopText(wrongColorModifier + typedLetter);
+
+            /*if (GlobalVariables.npcTalking) 
             {
                 mistakeAmt += 1;
-                //remove letter BUT
+                //add letter BUT
                 RemoveLetter();
                 // decrease clarity
                 ClarityManager.UpdateClarity(clarityDecreasePerMistake);
-            }
+            }*/
 
             //no matter who talking: get wrong, get vfx and sfx
             //shake
-            StartCoroutine(Shake(TextParent));
+            //StartCoroutine(Shake(TextParent));
             //play wrong input sound
             theAudioManager.PlayPitch("Wrong", 1);
             
             //sentence can be completed on an incorrect letter
             if (isSentenceComplete())
             {
-                bankIndex =+ 1;
+                GlobalVariables.ScriptIndex =+ 1;
                 SetCurrentWord();
             }
         }
@@ -185,23 +195,27 @@ public class Typer : MonoBehaviour
     private bool isCorrectLetter(string letter)
     {
         //if first letter, is correct letter
-        return remainingWord.IndexOf(letter) == 0;
+        return remainingSentence.IndexOf(letter) == 0;
     }
     private void RemoveLetter()
     {
-        string newString = remainingWord.Remove(0, 1);
+        string newString = remainingSentence.Remove(0,1);
         SetRemainingWord(newString);
     }
+
+    public void AddTopText(string typedLetter)
+    {
+        topText.text = topText.text + typedLetter;
+    }
+
     private bool isSentenceComplete()
     {
         //no more to type
-        return remainingWord.Length == 0;
+        return remainingSentence.Length == 0;
     }
 
-    public void SetBackgroundText(string currentSentence)
-    {
-        BackgroundText.text = currentSentence;
-    }
+
+
     public IEnumerator Shake(GameObject textobj)
     {
         yield return textobj.transform.DOShakePosition(0.2f, shakeVector, 10, 45, true, false, ShakeRandomnessMode.Full);

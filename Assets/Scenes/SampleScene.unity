@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 172252351}
   - component: {fileID: 172252350}
   m_Layer: 5
-  m_Name: NPC Text
+  m_Name: NPC Top Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,8 +222,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -563,7 +563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &321213567
 RectTransform:
   m_ObjectHideFlags: 0
@@ -635,6 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2745498c18f52be4cb5193d47a7d9ddf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GlobalVariables: {fileID: 0}
   TimerText: {fileID: 689474139}
   Fill: {fileID: 836931025}
   Outline: {fileID: 321213568}
@@ -1490,6 +1491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a789d742210604a8178ef95349183f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GlobalVariables: {fileID: 0}
   theTyper: {fileID: 1856737580}
   npcTalking: 0
   idle: 0
@@ -2162,6 +2164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a789d742210604a8178ef95349183f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GlobalVariables: {fileID: 0}
   theTyper: {fileID: 1856737580}
   npcTalking: 0
   idle: 0
@@ -2273,6 +2276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 095c6aa41d4b8104b89d09e03a2e335a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GlobalVariables: {fileID: 0}
   clarity: 0
   Overlays:
   - {fileID: 1132359871}
@@ -2707,8 +2711,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 3363996290
-  m_fontColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 0.78431374}
+    rgba: 3365377943
+  m_fontColor: {r: 0.5924529, g: 0.5924529, b: 0.5924529, a: 0.78431374}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2731,8 +2735,8 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_fontStyle: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2830,6 +2834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a789d742210604a8178ef95349183f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GlobalVariables: {fileID: 0}
   theTyper: {fileID: 1856737580}
   npcTalking: 0
   idle: 0
@@ -3697,7 +3702,7 @@ GameObject:
   - component: {fileID: 1558363548}
   - component: {fileID: 1558363549}
   m_Layer: 0
-  m_Name: Dialog/Script
+  m_Name: Scene Script
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3958,7 +3963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1834579826
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4196,13 +4201,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd3f5a005bf84d74eaea7462a40a11b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wordBank: {fileID: 1558363549}
-  wordOutput: {fileID: 0}
+  GlobalVariables: {fileID: 2072754670}
+  SceneScript: {fileID: 1558363549}
   Texts:
   - {fileID: 172252350}
   - {fileID: 1834579827}
-  bankIndex: 0
-  npcSpeaking: 0
+  backgroundText: {fileID: 1289488810}
+  topText: {fileID: 172252350}
+  remainingSentence: 
+  currentSentence: 
+  wrongColorModifier: <color=#ff0000ff>
   TextParent: {fileID: 401911697}
   shakeVector: {x: 10, y: 10, z: 10}
   EndScreen: {fileID: 1985918354}
@@ -4731,6 +4739,58 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 1
+--- !u!1 &2072754669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2072754671}
+  - component: {fileID: 2072754670}
+  m_Layer: 0
+  m_Name: Global Typer Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2072754670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072754669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64f49ee85573dd745ab879dbd0bf8635, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clarity: 0
+  energy: 0
+  comfort: 0
+  npcTalking: 0
+  ScriptIndex: 0
+  Typer: {fileID: 0}
+  NPC: {fileID: 0}
+  Player: {fileID: 0}
+--- !u!4 &2072754671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072754669}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.3437357, y: -1.1647189, z: -18.730791}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2081680901
 GameObject:
   m_ObjectHideFlags: 0
@@ -4926,3 +4986,4 @@ SceneRoots:
   - {fileID: 1943020233}
   - {fileID: 1614541008}
   - {fileID: 2061585202}
+  - {fileID: 2072754671}

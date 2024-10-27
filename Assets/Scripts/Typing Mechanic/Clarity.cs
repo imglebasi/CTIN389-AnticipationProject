@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class Clarity : MonoBehaviour
 {
+    public GlobalTyperVariables GlobalVariables;
+
     public float clarity;
     //MOST clarity = 0 because its based on alpha
     public List<Image> Overlays = new List<Image>();

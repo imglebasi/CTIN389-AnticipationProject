@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class Timer : MonoBehaviour
 {
+    public GlobalTyperVariables GlobalVariables;
+
     [Header("Timer")]
     public TextMeshProUGUI TimerText;
     public Image Fill;
@@ -62,9 +64,9 @@ public class Timer : MonoBehaviour
                 ClarityManager.UpdateClarity(clarityDecrease);
 
                 //move onto next sentence
-                Typer.GetComponent<Typer>().bankIndex += 1;
-                Typer.GetComponent<Typer>().SetCurrentWord();
-                bankIndex += 1;
+                //Typer.GetComponent<Typer>().bankIndex += 1;
+                //Typer.GetComponent<Typer>().SetCurrentWord();
+                //bankIndex += 1;
 
                 //stop timer
                 runTimer = false;
@@ -82,7 +84,7 @@ public class Timer : MonoBehaviour
 
         currentSentence = Dialog.Dialog[bankIndex];
 
-        if (currentSentence.EndsWith("0"))
+        if (GlobalVariables.npcTalking)
         {
             //reset cause we abt to calculate a new timeMax to use
             timeMax = 0;
@@ -112,7 +114,7 @@ public class Timer : MonoBehaviour
             runTimer = true;
 
         }
-        else if (currentSentence.EndsWith("1")) //player is talking so...
+        else if (!GlobalVariables.npcTalking) //player is talking so...
         {
             //hide timer
             Fill.color = new Color(255, 255, 255, 0);

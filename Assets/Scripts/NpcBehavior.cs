@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class NpcBehavior : MonoBehaviour
 {
+    public GlobalTyperVariables GlobalVariables;
+
     [Header("Conditions")]
     public GameObject theTyper;
     public bool npcTalking;
