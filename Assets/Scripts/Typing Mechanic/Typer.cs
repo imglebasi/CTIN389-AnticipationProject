@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,8 +30,11 @@ public class Typer : MonoBehaviour
 
     [Header("VFX")]
     public GameObject TextParent;
+    public RectTransform Cursor;
+    public float cursorInterval;
     public Vector3 shakeVector;
     public GameObject EndScreen;
+
     public Clarity ClarityManager;
     //how much clarity should go down per mistake
     public float clarityDecreasePerMistake;
@@ -145,9 +149,21 @@ public class Typer : MonoBehaviour
 
     private void EnterLetter(string typedLetter)
     {
+        //regardless if right or wrong, move cursor to "correct" place
+        if (typedLetter == " ")
+        {
+            //so have to space out a bit more
+            StartCoroutine(MoveCursor(cursorInterval + 10));
+        }
+        else
+        {
+            StartCoroutine(MoveCursor(cursorInterval));
+        }
+
+
         if (isCorrectLetter(typedLetter))
         {
-            Debug.Log("correct letter!");
+            //Debug.Log("correct letter!");
             RemoveLetter();
             AddTopText("<color=#000000ff>" + typedLetter);
 
@@ -165,7 +181,10 @@ public class Typer : MonoBehaviour
         //WRONG input while listening to npc talk
         else if (!isCorrectLetter(typedLetter))
         {
-            Debug.Log("incorrect letter.");
+            //Debug.Log("incorrect letter.");
+
+            //remove anyways
+            RemoveLetter();
 
             AddTopText(wrongColorModifier + typedLetter);
 
@@ -219,6 +238,10 @@ public class Typer : MonoBehaviour
     public IEnumerator Shake(GameObject textobj)
     {
         yield return textobj.transform.DOShakePosition(0.2f, shakeVector, 10, 45, true, false, ShakeRandomnessMode.Full);
+    }
+    public IEnumerator MoveCursor(float amt)
+    {
+        yield return Cursor.DOLocalMoveX(Cursor.localPosition.x + amt, 0.1f, false);
     }
 
 }
