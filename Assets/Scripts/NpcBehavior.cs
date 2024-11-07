@@ -6,11 +6,11 @@ using DG.Tweening;
 
 public class NpcBehavior : MonoBehaviour
 {
-    public GlobalTyperVariables GlobalVariables;
+    public GlobalTyperVariables GV;
 
     [Header("Conditions")]
-    public GameObject theTyper;
-    public bool npcTalking;
+    //public GameObject theTyper;
+    //public bool npcTalking;
     public bool idle;
 
     [Header("Animations Info")]
@@ -56,7 +56,7 @@ public class NpcBehavior : MonoBehaviour
         //npcTalking = theTyper.GetComponent<Typer>().npcSpeaking;
 
         //npc is talking
-        if (talking)
+        if (talking == true)
         {
             idle = false;
             theAnimation = "talking";
@@ -76,7 +76,7 @@ public class NpcBehavior : MonoBehaviour
             StartCoroutine(idleToAnimDelay(itaDuration));
         }
         //player is talking and npc is NOT idle, doing a mannerism
-        else if ((!talking) && (!idle))
+        else if (talking && (!idle))
         {
             //Debug.Log("doing a mannerism");
 

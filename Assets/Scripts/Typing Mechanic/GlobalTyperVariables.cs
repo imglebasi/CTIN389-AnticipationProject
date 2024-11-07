@@ -12,12 +12,18 @@ public class GlobalTyperVariables : MonoBehaviour
     [Tooltip("key info about where in script player is at")]
     public bool npcTalking;
     public int ScriptIndex;
-    
+
+    [Header("Response Mechanic")]
+    [Tooltip("key info about response mechanic")]
+    public bool isSentenceComplete = false;
+
+
     [Tooltip("classes with importance")]
     [Header("Key GameObjects")]
     public GameObject Typer;
     public GameObject NPC;
     public GameObject Player;
+    public Responder ResponseScript;
 
     private void Update()
     {
