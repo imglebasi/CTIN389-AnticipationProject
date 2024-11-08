@@ -19,7 +19,7 @@ public class NpcBehavior : MonoBehaviour
     public int mannerismAmt = 3;
     public string theAnimation;
     //dictates delay between mannerism anim to idle anim
-    public List<float> mannerismLength = new List<float>() { 1f, 2f, 3f };
+    public List<float> mannerismLength = new List<float>() { 1f, 1f, 1f };
 
     private Animator _Animator;
     private int whichAnim;
@@ -44,28 +44,30 @@ public class NpcBehavior : MonoBehaviour
     void Start()
     {
         _Animator = GetComponent<Animator>();
+        SetAnimation();
     }
 
     void Update()
     {
+
     }
 
-    public void SetAnimation(bool talking)
+    public void SetAnimation()
     {
         //just in case,,,,
         //npcTalking = theTyper.GetComponent<Typer>().npcSpeaking;
 
         //npc is talking
-        if (talking == true)
+        if (GV.npcTalking)
         {
             idle = false;
             theAnimation = "talking";
             _Animator.SetInteger("animation", 1);
         }
         //player is talking and npc is idle
-        else if ((!talking) && idle)
+        else if ((!GV.npcTalking) && idle)
         {
-            //Debug.Log("npc is idle");
+            Debug.Log("npc is idle");
             //set animation to idle
             theAnimation = "idle";
             _Animator.SetInteger("animation", 0);
@@ -76,9 +78,9 @@ public class NpcBehavior : MonoBehaviour
             StartCoroutine(idleToAnimDelay(itaDuration));
         }
         //player is talking and npc is NOT idle, doing a mannerism
-        else if (talking && (!idle))
+        else if (!GV.npcTalking && (!idle))
         {
-            //Debug.Log("doing a mannerism");
+            Debug.Log("doing a mannerism");
 
             //set controller to a random mannerism
 
@@ -87,6 +89,8 @@ public class NpcBehavior : MonoBehaviour
             theAnimation = "a mannerism: " + whichAnim;
             _Animator.SetInteger("animation", whichAnim);
 
+            StartCoroutine(animToIdleDelay(3));
+            //StartCoroutine(animToIdleDelay(mannerismLength[whichAnim - 2]));
             //start countdown to switch BACK to idle
             //StartCoroutine(animToIdleDelay());
         }
@@ -94,20 +98,21 @@ public class NpcBehavior : MonoBehaviour
 
     public IEnumerator idleToAnimDelay(float duration)
     {
+        Debug.Log("started idle to mannerism delay");
         yield return new WaitForSeconds(duration);
         //not idle, going to perform a mannerism
         idle = false;
-        SetAnimation(false);
+        SetAnimation();
     }
 
 
     //dont think i need/cant figure out
     //depending on which mannerism is playing, delay between anim and idle diff
-    public IEnumerator animToIdleDelay()
+    public IEnumerator animToIdleDelay(float duration)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(duration);
         idle = true;
-        SetAnimation(false);
+        SetAnimation();
 
         /*
         //too lazy to make this work- just wait a set time of 2

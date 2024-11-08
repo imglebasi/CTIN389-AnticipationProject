@@ -70,11 +70,6 @@ public class Typer : MonoBehaviour
     }
     public void SetCurrentWord()
     {
-        /*if (SceneScript.Dialog[GlobalVariables.ScriptIndex].EndsWith("0"))
-        {
-
-        }*/
-
         currentSentence = SceneScript.Dialog[GlobalVariables.ScriptIndex];
 
         /*if reach end of script
@@ -91,24 +86,11 @@ public class Typer : MonoBehaviour
             BackgroundText.text = currentSentence;
             topText.text = "";
 
-            /*
-            foreach(NpcBehavior script in NPCs) //so arms also get animated
-            {
-                script.idle = false;
-                script.SetAnimation(GlobalVariables.npcTalking);
-            }*/
-
             //have background text
             //SetBackgroundText(currentWord.TrimEnd('0'));
         }
         else if(GlobalVariables.npcTalking == false)
         {
-
-            foreach (NpcBehavior script in NPCs) //so arms also get animated
-            {
-                script.SetAnimation(GlobalVariables.npcTalking);
-            }
-
             //hide texts
             BackgroundText.text = "";
             topText.text = "";
@@ -143,7 +125,7 @@ public class Typer : MonoBehaviour
             }*/
 
             string keysPressed = Input.inputString;
-            Debug.Log(keysPressed);
+            //Debug.Log(keysPressed);
 
             //check if multiple keys pressed
             if (keysPressed.Length == 1)
@@ -176,10 +158,7 @@ public class Typer : MonoBehaviour
 
             if (isSentenceComplete())
             {
-                GlobalVariables.isSentenceComplete = true;
-                GlobalVariables.npcTalking = false;
-                SetCurrentWord();
-
+                SentenceComplete();
                 //let timer know to set a new timer max
                 //Timer.bankIndex = Timer.bankIndex + 1;
                 //Timer.setTimerMax();
@@ -214,9 +193,7 @@ public class Typer : MonoBehaviour
             //sentence can be completed on an incorrect letter
             if (isSentenceComplete())
             {
-                GlobalVariables.isSentenceComplete = true;
-                GlobalVariables.npcTalking = false;
-                SetCurrentWord();
+                SentenceComplete();
             }
         }
     }
@@ -239,13 +216,25 @@ public class Typer : MonoBehaviour
 
     private bool isSentenceComplete()
     {
-        //no more to type
-        Cursor.position = cursorOriginalPos;
-        Cursor.GetComponent<Image>().color = new Color(0,0,0,0);
-
         return remainingSentence.Length == 0;
     }
 
+    public void SentenceComplete()
+    {
+        Cursor.position = cursorOriginalPos;
+        Cursor.GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        GlobalVariables.isSentenceComplete = true;
+        GlobalVariables.npcTalking = false;
+
+        foreach(NpcBehavior animScript in NPCs)
+        {
+            Debug.Log("set anim to: " + GlobalVariables.npcTalking);
+            animScript.idle = true;
+            animScript.SetAnimation();
+        }
+
+        SetCurrentWord();
+    }
 
 
     public IEnumerator Shake(GameObject textobj)

@@ -1492,16 +1492,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a789d742210604a8178ef95349183f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GV: {fileID: 0}
+  GV: {fileID: 2072754670}
   idle: 0
   mannerismAmt: 3
   theAnimation: 
   mannerismLength:
   - 1
-  - 2
-  - 3
+  - 1
+  - 1
   idleToAnimMin: 0.1
-  idleToAnimMax: 5.5
+  idleToAnimMax: 5
 --- !u!1 &803246276
 GameObject:
   m_ObjectHideFlags: 0
@@ -2831,16 +2831,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a789d742210604a8178ef95349183f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GV: {fileID: 0}
+  GV: {fileID: 2072754670}
   idle: 0
   mannerismAmt: 3
   theAnimation: 
   mannerismLength:
   - 1
-  - 2
-  - 3
+  - 1
+  - 1
   idleToAnimMin: 0.1
-  idleToAnimMax: 3
+  idleToAnimMax: 5
 --- !u!212 &1297220204
 SpriteRenderer:
   m_ObjectHideFlags: 0
